@@ -17,12 +17,26 @@
           toast.type === 'danger' ? 'bg-slate-900 border-rose-500/40 text-white' : '',
         ]"
       >
-        <span class="text-base leading-none">
-          {{ toast.type === 'warning' ? '⚠️' : toast.type === 'danger' ? '🚨' : '✅' }}
+        <span class="flex items-center">
+          <component
+            :is="
+              toast.type === 'warning'
+                ? ExclamationTriangleIcon
+                : toast.type === 'danger'
+                  ? XCircleIcon
+                  : CheckCircleIcon
+            "
+            class="w-5 h-5 shrink-0"
+            :class="{
+              'text-amber-500': toast.type === 'warning',
+              'text-red-500': toast.type === 'danger',
+              'text-emerald-500': toast.type === 'green' || toast.type === 'success',
+            }"
+          />
         </span>
         <span class="flex-1">{{ toast.message }}</span>
         <button @click="toast.show = false" class="text-slate-400 hover:text-white transition ml-2">
-          ✕
+          <XMarkIcon class="w-5 h-5" />
         </button>
       </div>
     </Transition>
@@ -31,5 +45,12 @@
 
 <script setup>
 import { useToastStore } from '@/stores/toastStore'
+import {
+  ExclamationTriangleIcon,
+  XCircleIcon,
+  CheckCircleIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
+
 const toast = useToastStore()
 </script>

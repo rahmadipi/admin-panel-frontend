@@ -4,7 +4,6 @@ import AdminLayout from '@/layouts/AdminLayout.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import TransactionsView from '@/views/TransactionsView.vue'
-import { useAuthStore } from '@/stores/authStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,11 +42,14 @@ const router = createRouter({
   ],
 })
 
-// Navigation Guard untuk proteksi halaman
+// Navigation Guard untuk proteksi halaman dan mencegah akses login jika sudah login
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
     next('/login')
+  } else if (to.path === '/login' && isAuthenticated) {
+    next('/dashboard')
   } else {
     next()
   }

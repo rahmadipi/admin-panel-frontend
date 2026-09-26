@@ -25,7 +25,7 @@
           v-show="!isCollapsed || isMobileOpen"
           class="font-bold text-base text-white tracking-wide truncate transition-opacity duration-200"
         >
-          AdminPOS
+          Admin POS
         </span>
       </div>
 
