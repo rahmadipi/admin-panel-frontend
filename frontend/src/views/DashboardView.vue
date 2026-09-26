@@ -3,9 +3,11 @@
     <!-- Header Welcome -->
     <div class="flex justify-between items-center">
       <div>
-        <h1 class="text-2xl font-bold text-slate-800">
-          Selamat Datang, {{ authStore.user?.name || 'Admin' }}! 👋
-        </h1>
+        <div class="flex items-center gap-2">
+          <h1 class="text-2xl font-bold text-slate-800">
+            Selamat Datang, {{ authStore.user?.name || 'Admin' }}!
+          </h1>
+        </div>
         <p class="text-slate-500 text-sm mt-0.5">
           Berikut adalah ringkasan performa penjualan dan stok barang kamu saat ini.
         </p>
@@ -27,9 +29,9 @@
           </h3>
         </div>
         <div
-          class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-lg"
+          class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center"
         >
-          💰
+          <BanknotesIcon class="w-6 h-6" />
         </div>
       </div>
 
@@ -43,10 +45,8 @@
           </p>
           <h3 class="text-xl font-bold text-slate-800 mt-1">{{ totalTransactions }} Transaksi</h3>
         </div>
-        <div
-          class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center font-bold text-lg"
-        >
-          🧾
+        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+          <DocumentTextIcon class="w-6 h-6" />
         </div>
       </div>
 
@@ -59,9 +59,9 @@
           <h3 class="text-xl font-bold text-slate-800 mt-1">{{ totalProducts }} Item</h3>
         </div>
         <div
-          class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center font-bold text-lg"
+          class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center"
         >
-          📦
+          <CubeIcon class="w-6 h-6" />
         </div>
       </div>
 
@@ -81,9 +81,9 @@
           </h3>
         </div>
         <div
-          class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center font-bold text-lg"
+          class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center"
         >
-          ⚠️
+          <ExclamationTriangleIcon class="w-6 h-6" />
         </div>
       </div>
     </div>
@@ -156,7 +156,7 @@
           </div>
 
           <p v-if="lowStockProducts.length === 0" class="text-xs text-slate-400 text-center py-6">
-            Semua stok produk dalam kondisi aman 👍
+            Semua stok produk dalam kondisi aman
           </p>
         </div>
       </div>
@@ -169,6 +169,12 @@ import { computed } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useProductStore } from '@/stores/productStore'
 import { useTransactionStore } from '@/stores/transactionStore'
+import {
+  BanknotesIcon,
+  DocumentTextIcon,
+  CubeIcon,
+  ExclamationTriangleIcon,
+} from '@heroicons/vue/24/outline'
 
 const authStore = useAuthStore()
 const productStore = useProductStore()

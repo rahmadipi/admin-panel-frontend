@@ -3,7 +3,7 @@
     <!-- Header Page & Tab Switcher -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-slate-800">Transaksi Kasir (POS)</h1>
+        <h1 class="text-2xl font-bold text-slate-800">Transaksi Penjualan</h1>
         <p class="text-slate-500 text-sm mt-0.5">
           Pilih produk untuk menambah ke keranjang, lakukan pembayaran, dan cetak struk.
         </p>
@@ -14,24 +14,26 @@
         <button
           @click="activeTab = 'pos'"
           :class="[
-            'px-4 py-2 text-xs font-bold rounded-lg transition',
+            'flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg transition',
             activeTab === 'pos'
               ? 'bg-white text-blue-600 shadow-xs'
               : 'text-slate-600 hover:text-slate-900',
           ]"
         >
-          🛒 Buat Transaksi
+          <ShoppingCartIcon class="w-4 h-4" />
+          <span>Buat Transaksi</span>
         </button>
         <button
           @click="activeTab = 'history'"
           :class="[
-            'px-4 py-2 text-xs font-bold rounded-lg transition',
+            'flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg transition',
             activeTab === 'history'
               ? 'bg-white text-blue-600 shadow-xs'
               : 'text-slate-600 hover:text-slate-900',
           ]"
         >
-          📜 Riwayat Transaksi ({{ transactionStore.transactions.length }})
+          <DocumentTextIcon class="w-4 h-4" />
+          <span>Riwayat Transaksi ({{ transactionStore.transactions.length }})</span>
         </button>
       </div>
     </div>
@@ -41,12 +43,15 @@
       <!-- Katalog Produk -->
       <div class="lg:col-span-7 xl:col-span-8 space-y-4">
         <div class="flex flex-col sm:flex-row gap-3">
-          <input
-            v-model="productSearch"
-            type="text"
-            placeholder="Cari produk..."
-            class="px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none flex-1 shadow-xs"
-          />
+          <div class="relative flex-1">
+            <MagnifyingGlassIcon class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+            <input
+              v-model="productSearch"
+              type="text"
+              placeholder="Cari produk..."
+              class="w-full pl-9 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-xs"
+            />
+          </div>
           <select
             v-model="selectedCategory"
             class="px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-xs"
@@ -104,7 +109,10 @@
           class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 space-y-4 sticky top-6"
         >
           <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-            <h3 class="font-bold text-slate-800 text-base">Keranjang Belanja</h3>
+            <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+              <ShoppingCartIcon class="w-5 h-5 text-slate-600" />
+              <span>Keranjang Belanja</span>
+            </h3>
             <button
               v-if="cart.length > 0"
               @click="clearCart"
@@ -148,7 +156,7 @@
               v-if="cart.length === 0"
               class="py-12 text-center text-slate-400 text-xs flex flex-col items-center gap-2"
             >
-              <span class="text-2xl">🛒</span>
+              <ShoppingCartIcon class="w-10 h-10 text-slate-300 stroke-1" />
               <span>Keranjang masih kosong.<br />Klik produk untuk menambahkan.</span>
             </div>
           </div>
@@ -180,12 +188,15 @@
     <!-- TAB 2: RIWAYAT TRANSAKSI -->
     <div v-else class="bg-white rounded-2xl shadow-xs border border-slate-200/80 overflow-hidden">
       <div class="p-4 border-b border-slate-100 flex items-center justify-between">
-        <input
-          v-model="historySearch"
-          type="text"
-          placeholder="Cari ID transaksi..."
-          class="px-3.5 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none w-72"
-        />
+        <div class="relative w-72">
+          <MagnifyingGlassIcon class="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
+          <input
+            v-model="historySearch"
+            type="text"
+            placeholder="Cari ID transaksi..."
+            class="w-full pl-9 pr-3.5 py-2 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+          />
+        </div>
         <span class="text-xs font-semibold text-slate-400">
           Total: {{ filteredHistory.length }} Transaksi
         </span>
@@ -264,7 +275,7 @@
                 @click="closePaymentModal"
                 class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition"
               >
-                ✕
+                <XMarkIcon class="w-5 h-5" />
               </button>
             </div>
 
@@ -458,6 +469,12 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import {
+  ShoppingCartIcon,
+  DocumentTextIcon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import { useProductStore } from '@/stores/productStore'
 import { useTransactionStore } from '@/stores/transactionStore'
 
@@ -479,7 +496,7 @@ const paidAmount = ref(0)
 const isReceiptModalOpen = ref(false)
 const selectedTransaction = ref(null)
 
-// Computed (Mengambil data langsung dari productStore Master Product)
+// Computed
 const categories = computed(() => {
   const cats = productStore.products.map((p) => p.category).filter(Boolean)
   return [...new Set(cats)]
@@ -563,7 +580,7 @@ const closeReceiptModal = () => {
   selectedTransaction.value = null
 }
 
-// Submit Payment (Mengurangi stok langsung di productStore)
+// Submit Payment
 const submitPayment = () => {
   cart.value.forEach((cartItem) => {
     const prod = productStore.products.find((p) => p.id === cartItem.id)

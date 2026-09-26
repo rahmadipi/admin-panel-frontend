@@ -8,6 +8,14 @@
         <p class="text-xs text-slate-500">Masukan akun admin Anda untuk mengakses sistem</p>
       </div>
 
+      <!-- Alert Error jika login salah -->
+      <div
+        v-if="errorMessage"
+        class="p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs font-medium"
+      >
+        {{ errorMessage }}
+      </div>
+
       <form @submit.prevent="handleLogin" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-600 mb-1">Username / Email</label>
@@ -53,8 +61,12 @@ const toast = useToastStore()
 
 const username = ref('')
 const password = ref('')
+const errorMessage = ref('')
 
 const handleLogin = () => {
+  // Reset error setiap kali mencoba login kembali
+  errorMessage.value = ''
+
   if (username.value === 'admin' && password.value === 'admin123') {
     // 1. Simpan status autentikasi di localStorage
     localStorage.setItem('isAuthenticated', 'true')
@@ -70,6 +82,7 @@ const handleLogin = () => {
       router.push(targetPath)
     }, 500)
   } else {
+    errorMessage.value = 'Username atau password yang Anda masukkan salah!'
     toast.danger('Username atau password yang Anda masukkan salah!')
   }
 }
